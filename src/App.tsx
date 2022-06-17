@@ -1,8 +1,7 @@
 import './App.css';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { useRef } from 'react';
-
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useEffect } from 'react';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -19,41 +18,20 @@ const Box = styled(motion.div)`
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
-const BiggerBox = styled.div`
-  width: 600px;
-  height: 600px;
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow:hidden;
-`;
-
-const boxVariants = {
-  hover: {scale: 1.5, rotateZ:90},
-  click: {scale:1, borderRadius: "100px"},
-  // drag: {backgroundColor:"rgb(255, 234, 167)"}
-}
-
-
+// -800 -> scale 2, 0 -> scale 0, 800-> scale 0.5
 function App() {
-  const biggerBoxRef = useRef(null);
+  const x = useMotionValue(0);
+  const scaleValue = useTransform(x,[-800,0,800],[2,1,0]);
+  useEffect(()=>{scaleValue.onChange(()=>{console.log(scaleValue.get());})},[scaleValue]);
   return (
     <Wrapper>
-      <BiggerBox ref={biggerBoxRef}>
-        <Box
-          drag // 드래그 활성화
-          dragSnapToOrigin // 드롭 시 중앙으로 돌아오는 프롭(원래 위치로 돌아옴.)
-          dragElastic={1} // 드래그 시 당기는 힘
-          dragConstraints={biggerBoxRef} // 제약 설정
-          variants={boxVariants}
-          whileHover="hover"
-          whileTap="click"
-          // whileDrag="drag"
-        />
-      </BiggerBox>
+      <Box
+        drag="x"
+        style={{x, scale: scaleValue}}
+        dragSnapToOrigin
+      />
     </Wrapper>
   );
 }
+
 export default App;
