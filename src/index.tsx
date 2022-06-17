@@ -1,9 +1,9 @@
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import {ThemeProvider} from 'styled-components';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { DarkTheme } from './theme';
-import {createGlobalStyle} from 'styled-components';
+import { RecoilRoot } from 'recoil';
 
 // Reset CSS
 const GlobalStyle = createGlobalStyle`
@@ -68,12 +68,13 @@ a {
   color: inherit;
 }
 `;
+const root = ReactDOM.createRoot( document.getElementById('root') as HTMLElement);
 
-ReactDOM.render(
-  <ThemeProvider theme={DarkTheme}>
-    <GlobalStyle />
-    <App />
-  </ThemeProvider>
-  ,
-  document.getElementById('root') as HTMLElement
+root.render(
+  <RecoilRoot>
+    <ThemeProvider theme={DarkTheme}>
+      <GlobalStyle />
+      <App />
+    </ThemeProvider>
+  </RecoilRoot>
 );
