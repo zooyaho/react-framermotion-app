@@ -59,7 +59,6 @@ table {
 }
 body {
   font-family: 'Roboto Mono', monospace;
-  background: linear-gradient(135deg,#e09,#d0e);
   color:black;
   line-height: 1.2;
 }
